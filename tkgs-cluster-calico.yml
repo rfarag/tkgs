@@ -1,0 +1,26 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1    
+kind: TanzuKubernetesCluster                 
+metadata:
+  name: tkgs-cluster-2-calico                              
+  namespace: tkgs-cluster-ns                     
+spec:
+  distribution:
+    version: v1.20                              
+  topology:
+    controlPlane:
+      count: 3                                                        
+      class: guaranteed-large                  
+      storageClass: vwt-storage-policy        
+    workers:
+      count: 5                                                      
+      class: guaranteed-xlarge                           
+      storageClass: vwt-storage-policy      
+  settings:
+    network:
+      cni:
+        name: calico                           #Use Calico CNI for this cluster
+      services:
+        cidrBlocks: ["198.51.100.0/12"]        #Must not overlap with SVC
+      pods:
+        cidrBlocks: ["192.0.2.0/16"]           #Must not overlap with SVC
+      serviceDomain: managedcluster.local

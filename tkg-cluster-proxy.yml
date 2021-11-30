@@ -1,0 +1,35 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1    
+kind: TanzuKubernetesCluster                 
+metadata:
+  name: tkgs-cluster-with-proxy                                
+  namespace: tkgs-cluster-ns                     
+spec:
+  distribution:
+    version: v1.20                              
+  topology:
+    controlPlane:
+      count: 3                                                        
+      class: guaranteed-medium                  
+      storageClass: vwt-storage-policy        
+    workers:
+      count: 5                                                      
+      class: guaranteed-xlarge                           
+      storageClass: vwt-storage-policy       
+  settings:
+    storage:
+      classes: ["gold", "silver"]              
+      defaultClass: silver                     
+    network:
+      cni:
+        name: antrea 
+      pods:
+        cidrBlocks:
+        - 193.0.2.0/16
+      services:
+        cidrBlocks:
+        - 195.51.100.0/12           
+      serviceDomain: managedcluster.local
+      proxy:
+        httpProxy: http://10.186.102.224:3128  #Proxy URL for HTTP connections
+        httpsProxy: http://10.186.102.224:3128 #Proxy URL for HTTPS connections
+        noProxy: [10.246.0.0/16,192.168.144.0/20,192.168.128.0/20] #SVC Pod, Egress, Ingress CIDRs

@@ -1,0 +1,29 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1
+kind: TanzuKubernetesCluster
+metadata:
+  name: default-storage-spec
+  namespace: tkgs-cluster-ns
+spec:
+  topology:
+    controlPlane:
+      count: 3
+      class: best-effort-medium
+      storageClass: vwt-storage-policy
+    workers:
+      count: 3
+      class: best-effort-medium
+      storageClass: vwt-storage-policy
+  distribution:
+    version: v1.20
+  settings:
+    network:
+      cni:
+        name: antrea
+      services:
+        cidrBlocks: ["198.51.100.0/12"]
+      pods:
+        cidrBlocks: ["192.0.2.0/16"]
+      serviceDomain: "tanzukubernetescluster.local"
+    storage:
+      classes: ["gold", "silver"]              #Array of named PVC storage classes
+      defaultClass: silver                     #Default PVC storage class
