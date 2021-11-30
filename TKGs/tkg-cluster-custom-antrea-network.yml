@@ -1,0 +1,28 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1
+kind: TanzuKubernetesCluster
+metadata:
+  name: tkg-cluster-3-antrea
+  namespace: tkgs-cluster-ns
+spec:
+  distribution:
+    version: v1.20
+  topology:
+    controlPlane:
+      class: guaranteed-medium
+      count: 3
+      storageClass: vwt-storage-policy
+    workers:
+      class: guaranteed-medium
+      count: 5
+      storageClass: vwt-storage-policy
+  settings:
+    network:
+      cni:
+        name: antrea                       #Use Antrea CNI
+      pods:
+        cidrBlocks:
+        - 193.0.2.0/16                     #Must not overlap with SVC
+      services:
+        cidrBlocks:
+        - 195.51.100.0/12                  #Must not overlap with Pods
+      serviceDomain: managedcluster.local

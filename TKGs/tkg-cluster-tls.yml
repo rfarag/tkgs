@@ -1,0 +1,31 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1
+kind: TanzuKubernetesCluster
+metadata:
+  name: tkgs-cluster-with-custom-certs-tls
+  namespace: tkgs-cluster-ns
+spec:
+  topology:
+    controlPlane:
+      count: 3
+      class: guaranteed-medium
+      storageClass: vwt-storage-profile
+    workers:
+      count: 3
+      class: guaranteed-large
+      storageClass: vwt-storage-profile
+  distribution:
+    version: 1.20.2
+  settings:
+    network:
+      cni:
+        name: antrea
+      services:
+        cidrBlocks: ["198.51.100.0/12"]
+      pods:
+        cidrBlocks: ["192.0.2.0/16"]
+      serviceDomain: "managedcluster.local"
+      trust:
+        additionalTrustedCAs:
+          - name: custom-selfsigned-cert-for-tkc
+            data: |
+              LS0aaaaaaaaaaaaaaabase64...
