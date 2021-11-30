@@ -1,0 +1,5 @@
+kubectl run --restart=Never --image=gcr.io/kuar-demo/kuard-amd64:blue kuard
+
+
+#kubectl port-forward kuard 8080:8080
+#kubectl delete pod kuard
