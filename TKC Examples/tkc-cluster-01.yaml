@@ -1,0 +1,17 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1      
+kind: TanzuKubernetesCluster                   
+metadata:
+  name: tkc-test-1                         
+  namespace: test                   
+spec:
+  distribution:
+    version: v1.20.9                             
+  topology:
+    controlPlane:
+      count: 1                                 
+      class: best-effort-small                
+      storageClass: tkg-vm-storage-policy         
+    workers:
+      count: 1                                 
+      class: best-effort-small                
+      storageClass: tkg-vm-storage-policy         
